@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class BottomNavigationIndex with ChangeNotifier {
+class BottomNavigationNotifier with ChangeNotifier {
   int _state = 0;
   int get state => _state;
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:photo_card_flutter/feature/bottom_navigation/model/bottom_navigation_index.dart';
+import 'package:photo_card_flutter/feature/bottom_navigation/model/bottom_navigation_notifier.dart';
 import 'package:provider/provider.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
@@ -7,7 +7,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<BottomNavigationIndex>();
+    final viewModel = context.watch<BottomNavigationNotifier>();
     final state = viewModel.state;
 
     return BottomNavigationBar(
