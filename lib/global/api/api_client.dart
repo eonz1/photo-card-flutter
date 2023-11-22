@@ -29,13 +29,32 @@ class ApiClient {
   }
 
   void addInterceptors(Dio dio) {
+    dio.interceptors.add(createInterceptor());
     dio.interceptors.add(createDioLogger());
-    // dio.interceptors.add(createInterceptor());
   }
 
   Interceptor createInterceptor() {
     onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
       setAuthorizationToken(options);
+
+      if (options.contentType == null) {
+        final dynamic data = options.data;
+        final String? contentType;
+        if (data is FormData) {
+          contentType = Headers.multipartFormDataContentType;
+        } else if (data is Map) {
+          contentType = Headers.formUrlEncodedContentType;
+        } else if (data is String) {
+          contentType = Headers.jsonContentType;
+        } else if (data != null) {
+          contentType =
+              Headers.textPlainContentType; // Can be removed if unnecessary.
+        } else {
+          contentType = null;
+        }
+        options.contentType = contentType;
+      }
+
       handler.next(options);
     }
 
@@ -92,10 +111,8 @@ class ApiClient {
     return response;
   }
 
-  Future<Response?> postHTTP(String path, dynamic data,
-      {Map<String, dynamic>? queryParameters}) async {
-    Response response = await apiClient.post(path,
-        data: data, queryParameters: queryParameters);
+  Future<Response?> postHTTP(String path, dynamic data) async {
+    Response response = await apiClient.post(path, data: data);
     return response;
   }
 
