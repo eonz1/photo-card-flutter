@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:photo_card_flutter/feature/sign_up/model/sign_up_notifier.dart';
 import 'package:provider/provider.dart';
+
+import '../model/sign_up_notifier.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -12,6 +13,9 @@ class SignUpScreen extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: const Text("가입하기 화면"),
+        ),
         body: Padding(
           padding: const EdgeInsets.all(30.0),
           child: Column(

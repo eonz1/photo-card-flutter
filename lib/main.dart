@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import 'feature/sign_up/screen/sign_up_screen.dart';
+import 'feature/home/screen/home_screen.dart';
 import 'global/provider/provider_setup.dart';
 import 'global/service/global_keys.dart';
 
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SignUpScreen(),
+      home: const HomeScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
