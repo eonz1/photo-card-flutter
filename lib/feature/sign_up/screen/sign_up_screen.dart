@@ -92,7 +92,7 @@ class SignUpScreen extends StatelessWidget {
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       minimumSize: const Size.fromHeight(40)),
-                  onPressed: viewModel.canPress() == false
+                  onPressed: viewModel.canPress == false
                       ? null
                       : () async {
                           final isEqualPassword = viewModel.isEqualPassword();
