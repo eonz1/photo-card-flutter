@@ -15,6 +15,17 @@ class SignUpNotifier with ChangeNotifier {
   ValidationItem get phoneNumber => _phoneNumber;
   ValidationItem get email => _email;
 
+  bool canPress() {
+    // TODO: 아이디 중복확인 및 전화번호 인증
+    if (_id.error == null &&
+        _password.error == null &&
+        _reEnterPassword.error == null &&
+        _phoneNumber.error == null &&
+        _email.error == null) return true;
+
+    return false;
+  }
+
   void changeId(String value) {
     if (value.isEmpty) {
       _id = ValidationItem("", "아이디를 입력해주세요.");
@@ -22,6 +33,7 @@ class SignUpNotifier with ChangeNotifier {
 
     _id = ValidationItem(value, null);
 
+    canPress();
     notifyListeners();
   }
 
@@ -31,11 +43,14 @@ class SignUpNotifier with ChangeNotifier {
       _reEnterPassword = ValidationItem("", null);
 
       notifyListeners();
+      canPress();
+
       return;
     }
 
     _password = ValidationItem(value, null);
 
+    canPress();
     notifyListeners();
   }
 
@@ -43,6 +58,7 @@ class SignUpNotifier with ChangeNotifier {
     if (value.isEmpty) {
       _reEnterPassword = ValidationItem("", "비밀번호를 한번 더 입력해주세요.");
 
+      canPress();
       notifyListeners();
       return;
     }
@@ -50,12 +66,14 @@ class SignUpNotifier with ChangeNotifier {
     if (value != _password.value) {
       _reEnterPassword = ValidationItem("", "비밀번호가 일치하지 않습니다.");
 
+      canPress();
       notifyListeners();
       return;
     }
 
     _reEnterPassword = ValidationItem(value, null);
 
+    canPress();
     notifyListeners();
   }
 
@@ -63,6 +81,7 @@ class SignUpNotifier with ChangeNotifier {
     if (value.isEmpty) {
       _email = ValidationItem("", "이메일을 입력해주세요.");
 
+      canPress();
       notifyListeners();
       return;
     }
@@ -70,12 +89,14 @@ class SignUpNotifier with ChangeNotifier {
     if (!_isValidEmailFormat(value)) {
       _email = ValidationItem("", "이메일 주소를 정확히 입력해주세요.");
 
+      canPress();
       notifyListeners();
       return;
     }
 
     _email = ValidationItem(value, null);
 
+    canPress();
     notifyListeners();
   }
 
@@ -83,28 +104,35 @@ class SignUpNotifier with ChangeNotifier {
     if (value.isEmpty) {
       _phoneNumber = ValidationItem("", "휴대폰 번호를 입력해주세요.");
 
+      canPress();
       notifyListeners();
       return;
     }
 
     _phoneNumber = ValidationItem(value, null);
 
+    canPress();
     notifyListeners();
   }
 
   bool _isValidEmailFormat(value) {
     return RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(value);
   }
 
   // 맘에 안 듬..
-  void isEqualPassword() {
+  bool isEqualPassword() {
     if (password.value != reEnterPassword.value) {
       _reEnterPassword =
           ValidationItem(reEnterPassword.value, "비밀번호가 일치하지 않습니다.");
 
+      canPress();
       notifyListeners();
+
+      return false;
     }
+
+    return true;
   }
 }

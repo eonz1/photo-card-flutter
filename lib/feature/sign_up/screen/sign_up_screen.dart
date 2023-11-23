@@ -91,13 +91,14 @@ class SignUpScreen extends StatelessWidget {
               const Spacer(),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      minimumSize: Size.fromHeight(40)),
-                  onPressed: () {
-                    viewModel.isEqualPassword();
-
-                    // TODO: 기능 추가
-                  },
-                  child: const Text("가입 하기"))
+                      minimumSize: const Size.fromHeight(40)),
+                  onPressed: viewModel.canPress() == false
+                      ? null
+                      : () async {
+                          final isEqualPassword = viewModel.isEqualPassword();
+                          if (!isEqualPassword) return;
+                        },
+                  child: const Text("가입하기"))
             ],
           ),
         ),
