@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:photo_card_flutter/feature/sign_up/model/sign_up_notifier.dart';
 import 'package:provider/provider.dart';
 
@@ -73,6 +74,10 @@ class SignUpScreen extends StatelessWidget {
                             labelText: "휴대폰 번호",
                             errorText: viewModel.phoneNumber.error,
                             hintText: "\'-\' 구분없이 입력",
+                            keyboardType: TextInputType.phone,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
                             onChanged: (value) {
                               viewModel.changePhoneNumber(value);
                             },
@@ -113,6 +118,8 @@ class SignUpScreen extends StatelessWidget {
     required ValueChanged<String>? onChanged,
     bool? obscureText,
     String? hintText,
+    TextInputType? keyboardType,
+    List<TextInputFormatter>? inputFormatters,
   }) {
     return TextFormField(
       decoration: InputDecoration(
@@ -120,6 +127,8 @@ class SignUpScreen extends StatelessWidget {
         errorText: errorText,
         hintText: hintText,
       ),
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
       onChanged: onChanged,
       onTapOutside: (event) => FocusScope.of(context).unfocus(),
       obscureText: obscureText ?? false,
