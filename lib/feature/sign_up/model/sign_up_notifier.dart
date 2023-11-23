@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photo_card_flutter/feature/sign_up/service/sign_up_service.dart';
 
 import '../../../common/validation/validation_item.dart';
 
@@ -14,6 +15,8 @@ class SignUpNotifier with ChangeNotifier {
   ValidationItem get reEnterPassword => _reEnterPassword;
   ValidationItem get phoneNumber => _phoneNumber;
   ValidationItem get email => _email;
+
+  final signUpService = SignUpService();
 
   bool canPress() {
     // TODO: 아이디 중복확인 및 전화번호 인증
@@ -86,7 +89,7 @@ class SignUpNotifier with ChangeNotifier {
       return;
     }
 
-    if (!_isValidEmailFormat(value)) {
+    if (!signUpService.isValidEmailFormat(value)) {
       _email = ValidationItem("", "이메일 주소를 정확히 입력해주세요.");
 
       canPress();
@@ -115,13 +118,6 @@ class SignUpNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-  bool _isValidEmailFormat(value) {
-    return RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-        .hasMatch(value);
-  }
-
-  // 맘에 안 듬..
   bool isEqualPassword() {
     if (password.value != reEnterPassword.value) {
       _reEnterPassword =
