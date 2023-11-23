@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'feature/sign_up/screen/sign_up_screen.dart';
 import 'global/provider/provider_setup.dart';
+import 'global/service/global_keys.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,8 +27,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
+      scaffoldMessengerKey: scaffoldMessengerKey,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
