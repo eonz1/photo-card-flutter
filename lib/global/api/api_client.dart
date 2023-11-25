@@ -104,8 +104,8 @@ class ApiClient {
     // options.headers['authorization'] = 'Bearer ' + token;
   }
 
-  Future<Response?> getHTTP(String path,
-      {Map<String, dynamic>? queryParameters}) async {
+  Future<Response?> getHTTP(
+      String path, Map<String, String>? queryParameters) async {
     Response response =
         await apiClient.get(path, queryParameters: queryParameters);
     return response;
@@ -116,17 +116,18 @@ class ApiClient {
     return response;
   }
 
-  Future<Response?> putHTTP(String path, dynamic data,
-      {Map<String, dynamic>? queryParameters}) async {
-    Response response =
-        await apiClient.put(path, data: data, queryParameters: queryParameters);
+  Future<Response?> putHTTP(String path, dynamic data) async {
+    Response response = await apiClient.put(path, data: data);
     return response;
   }
 
-  Future<Response?> deleteHTTP(String path,
-      {Map<String, dynamic>? queryParameters}) async {
-    Response response =
-        await apiClient.delete(path, queryParameters: queryParameters);
+  Future<Response?> patchHTTP(String path, dynamic data) async {
+    Response response = await apiClient.patch(path, data: data);
+    return response;
+  }
+
+  Future<Response?> deleteHTTP(String path) async {
+    Response response = await apiClient.delete(path);
     return response;
   }
 }
