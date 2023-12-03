@@ -4,13 +4,6 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'api_route_constants.dart';
 
 class ApiClient {
-  late Dio apiClient;
-
-  ApiClient() {
-    Dio dio = createDio();
-    apiClient = dio;
-  }
-
   Dio createDio() {
     final options = createDioOptions();
     final dio = Dio(options);
@@ -46,9 +39,6 @@ class ApiClient {
           contentType = Headers.formUrlEncodedContentType;
         } else if (data is String) {
           contentType = Headers.jsonContentType;
-        } else if (data != null) {
-          contentType =
-              Headers.textPlainContentType; // Can be removed if unnecessary.
         } else {
           contentType = null;
         }
@@ -62,14 +52,11 @@ class ApiClient {
       final isLoginRequest = err.requestOptions.path == '/api/v1/login' &&
           err.requestOptions.method == 'POST';
 
-      if (isLoginRequest ||
-          err.response?.statusCode != 401 ||
-          err.response?.data['resultCode'] != 40101) {
+      if (isLoginRequest || err.response?.statusCode != 401) {
         return handler.next(err);
       }
 
       // TODO: 토큰 재발행 api 호출
-      String token = apiClient.get('/api/v1/token') as String;
 
       final options = err.requestOptions;
       setAuthorizationToken(options);
@@ -102,32 +89,5 @@ class ApiClient {
   setAuthorizationToken(RequestOptions options) {
     // TODO
     // options.headers['authorization'] = 'Bearer ' + token;
-  }
-
-  Future<Response?> getHTTP(
-      String path, Map<String, String>? queryParameters) async {
-    Response response =
-        await apiClient.get(path, queryParameters: queryParameters);
-    return response;
-  }
-
-  Future<Response?> postHTTP(String path, dynamic data) async {
-    Response response = await apiClient.post(path, data: data);
-    return response;
-  }
-
-  Future<Response?> putHTTP(String path, dynamic data) async {
-    Response response = await apiClient.put(path, data: data);
-    return response;
-  }
-
-  Future<Response?> patchHTTP(String path, dynamic data) async {
-    Response response = await apiClient.patch(path, data: data);
-    return response;
-  }
-
-  Future<Response?> deleteHTTP(String path) async {
-    Response response = await apiClient.delete(path);
-    return response;
   }
 }
