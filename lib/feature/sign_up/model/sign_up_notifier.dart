@@ -12,10 +12,15 @@ class SignUpNotifier with ChangeNotifier {
   bool _canPress = false;
 
   ValidationItem get id => _id;
+
   ValidationItem get password => _password;
+
   ValidationItem get reEnterPassword => _reEnterPassword;
+
   ValidationItem get phoneNumber => _phoneNumber;
+
   ValidationItem get email => _email;
+
   bool get canPress => _canPress;
 
   final signUpService = SignUpService();
@@ -149,5 +154,15 @@ class SignUpNotifier with ChangeNotifier {
     }
 
     return true;
+  }
+
+  void existId(bool value) {
+    if (value == false) {
+      _id = ValidationItem(id.value, "이미 사용 중인 아이디입니다.");
+    } else {
+      _id = ValidationItem(id.value, null);
+    }
+
+    notifyListeners();
   }
 }
