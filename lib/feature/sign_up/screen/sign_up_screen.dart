@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:photo_card_flutter/feature/login/screen/login_screen.dart';
 import 'package:photo_card_flutter/feature/sign_up/api/verify_email_request.dart';
 import 'package:photo_card_flutter/feature/sign_up/service/sign_up_service.dart';
 import 'package:photo_card_flutter/global/service/snack_bar_service.dart';
@@ -171,7 +172,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               phoneNumber: viewModel.phoneNumber.value,
                               email: viewModel.email.value);
 
-                          // TODO: 로그인 페이지로 이동
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
                         },
                   child: const Text("가입하기"))
             ],

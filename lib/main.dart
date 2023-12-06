@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:photo_card_flutter/feature/login/screen/login_screen.dart';
 import 'package:provider/provider.dart';
 
-import 'feature/home/screen/home_screen.dart';
 import 'global/provider/provider_setup.dart';
 import 'global/service/global_keys.dart';
 
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: const LoginScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
