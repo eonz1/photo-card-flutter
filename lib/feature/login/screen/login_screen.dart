@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 );
               },
               child: const Text("회원가입")),
-          Spacer(),
+          const Spacer(),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(40)),
@@ -66,12 +66,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 final password = _passwordTextEditController.text;
 
                 final result = await service.login(id: id, password: password);
-                if (result == false) {
-                  snackBarService.showError("로그인 실패");
-                  return;
-                }
+                if (result == false) return;
 
-                Navigator.push(
+                await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const HomeScreen(),
