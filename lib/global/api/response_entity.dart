@@ -2,13 +2,14 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'response_entity.g.dart';
 
-@JsonSerializable(genericArgumentFactories: true)
+@JsonSerializable(
+    genericArgumentFactories: true, fieldRename: FieldRename.snake)
 class ResponseEntity<T> {
-  String? status;
-  T? data;
-  String? message;
+  int? resultCode;
+  T? result;
+  String? resultMsg;
 
-  ResponseEntity({this.status, this.data, this.message});
+  ResponseEntity({this.resultCode, this.result, this.resultMsg});
 
   factory ResponseEntity.fromJson(
           Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>
