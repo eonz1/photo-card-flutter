@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api_route_constants.dart';
 
@@ -28,7 +29,19 @@ class ApiClient {
 
   Interceptor createInterceptor() {
     onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-      setAuthorizationToken(options);
+      final isLoginRequest =
+          options.path == '/login' && options.method == 'POST';
+
+      final isSignUpRequest =
+          options.path == '/member' && options.method == 'POST';
+
+      final isUserIdDuplicationCheck =
+          options.path.contains('/duplication-check') &&
+              options.method == 'POST';
+
+      if (!isLoginRequest && !isSignUpRequest && !isUserIdDuplicationCheck) {
+        await setAuthorizationToken(options);
+      }
 
       if (options.contentType == null) {
         final dynamic data = options.data;
@@ -49,17 +62,27 @@ class ApiClient {
     }
 
     onError(DioException err, ErrorInterceptorHandler handler) async {
-      final isLoginRequest = err.requestOptions.path == '/api/v1/login' &&
+      final isLoginRequest = err.requestOptions.path == '/login' &&
           err.requestOptions.method == 'POST';
 
-      if (isLoginRequest || err.response?.statusCode != 401) {
+      final isSignUpRequest = err.requestOptions.path == '/member' &&
+          err.requestOptions.method == 'POST';
+
+      final isUserIdDuplicationCheck =
+          err.requestOptions.path.contains('/duplication-check') &&
+              err.requestOptions.method == 'POST';
+
+      if (isSignUpRequest ||
+          isLoginRequest ||
+          isUserIdDuplicationCheck ||
+          err.response?.statusCode != 401) {
         return handler.next(err);
       }
 
       // TODO: 토큰 재발행 api 호출
 
       final options = err.requestOptions;
-      setAuthorizationToken(options);
+      await setAuthorizationToken(options);
 
       try {
         final dio = Dio();
@@ -86,8 +109,10 @@ class ApiClient {
     );
   }
 
-  setAuthorizationToken(RequestOptions options) {
-    // TODO
-    // options.headers['authorization'] = 'Bearer ' + token;
+  setAuthorizationToken(RequestOptions options) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('accessToken') ?? '';
+
+    options.headers['authorization'] = 'Bearer ${token}';
   }
 }
