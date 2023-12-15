@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:photo_card_flutter/feature/login/screen/login_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'global/provider/provider_setup.dart';
+import 'global/router/app_router.dart';
 import 'global/service/global_keys.dart';
 
 void main() async {
@@ -27,13 +27,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    final AppRouter appRouter = AppRouter();
+
+    return MaterialApp.router(
       scaffoldMessengerKey: scaffoldMessengerKey,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const LoginScreen(),
+      routerConfig: appRouter.router,
       debugShowCheckedModeBanner: false,
     );
   }
