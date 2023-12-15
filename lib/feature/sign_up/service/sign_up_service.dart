@@ -28,10 +28,9 @@ class SignUpService {
   }
 
   Future<bool> validId({required String id}) async {
-    // TODO
     final result = await signUpRepository.validId(id);
 
-    return true;
+    return result.result!;
   }
 
   Future<void> getEmailVerifyCode(String email) async {

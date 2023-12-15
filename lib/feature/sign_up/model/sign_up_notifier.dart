@@ -26,7 +26,7 @@ class SignUpNotifier with ChangeNotifier {
   final signUpService = SignUpService();
 
   void vaildSignUpButton() {
-    // TODO: 아이디 중복확인 및 전화번호 인증
+    // TODO: 이메일 인증
     if (_id.error != null ||
         _password.error != null ||
         _reEnterPassword.error != null ||
@@ -157,7 +157,7 @@ class SignUpNotifier with ChangeNotifier {
   }
 
   void existId(bool value) {
-    if (value == false) {
+    if (value == true) {
       _id = ValidationItem(id.value, "이미 사용 중인 아이디입니다.");
     } else {
       _id = ValidationItem(id.value, null);

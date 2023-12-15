@@ -52,8 +52,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             errorText: viewModel.id.error,
                             onChanged: (value) {
                               viewModel.changeId(value);
-
-                              // TODO: 아이디 중복 api 호출
                             },
                           ),
                         ),
