@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'verify_email_request.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class VerifyEmailRequest {
   String? email = "";
   String? emailAuthCode = "";
