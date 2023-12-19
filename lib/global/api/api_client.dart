@@ -110,7 +110,8 @@ class ApiClient {
   setAuthorizationToken(RequestOptions options) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = prefs.getString('accessToken') ?? '';
+    String grantType = prefs.getString('grantType') ?? '';
 
-    options.headers['authorization'] = 'Bearer ${token}';
+    options.headers['authorization'] = '$grantType $token';
   }
 }
