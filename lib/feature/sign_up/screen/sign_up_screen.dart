@@ -57,9 +57,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         TextButton(
                             onPressed: () async {
-                              final result =
-                                  await service.validId(id: viewModel.id.value);
-                              viewModel.existId(result);
+                              final result = await service.isDuplicatedId(
+                                  id: viewModel.id.value);
+
+                              viewModel.isDuplicatedId(result);
+
+                              if (!result) {
+                                snackBarService.show("사용 가능한 아이디에요.");
+                              }
                             },
                             child: const Text("중복 확인"))
                       ],
@@ -170,6 +175,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               phoneNumber: viewModel.phoneNumber.value,
                               email: viewModel.email.value);
 
+                          // TODO: 정상적으로 회원가입했을때만 로그인화면으로 보내기
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

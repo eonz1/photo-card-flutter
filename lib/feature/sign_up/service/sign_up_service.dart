@@ -1,7 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:photo_card_flutter/feature/sign_up/api/sign_up_repository.dart';
 import 'package:photo_card_flutter/feature/sign_up/api/verify_email_request.dart';
+import 'package:photo_card_flutter/global/api/response_entity.dart';
 
 import '../../../global/api/api_client.dart';
+import '../../../global/service/dio_exception_handler.dart';
 import '../api/sign_up_request.dart';
 
 class SignUpService {
@@ -27,8 +30,14 @@ class SignUpService {
     return await signUpRepository.signUp(request);
   }
 
-  Future<bool> validId({required String id}) async {
-    final result = await signUpRepository.validId(id);
+  Future<bool> isDuplicatedId({required String id}) async {
+    late final ResponseEntity<bool> result;
+
+    try {
+      result = await signUpRepository.isDuplicatedId(id);
+    } on DioException catch (exception) {
+      DioExceptionHandler.showExceptionMessage(exception);
+    }
 
     return result.result!;
   }

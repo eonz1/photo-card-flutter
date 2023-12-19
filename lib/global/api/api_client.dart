@@ -35,11 +35,9 @@ class ApiClient {
       final isSignUpRequest =
           options.path == '/member' && options.method == 'POST';
 
-      final isUserIdDuplicationCheck =
-          options.path.contains('/duplication-check') &&
-              options.method == 'POST';
+      final isDuplicationCheck = options.path.contains('duplication-check');
 
-      if (!isLoginRequest && !isSignUpRequest && !isUserIdDuplicationCheck) {
+      if (!isLoginRequest && !isSignUpRequest && !isDuplicationCheck) {
         await setAuthorizationToken(options);
       }
 

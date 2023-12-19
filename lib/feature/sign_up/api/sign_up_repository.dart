@@ -17,7 +17,7 @@ abstract class SignUpRepository {
   );
 
   @GET("/duplication-check/user-id/{id}")
-  Future<ResponseEntity<bool>> validId(@Path('id') String id);
+  Future<ResponseEntity<bool>> isDuplicatedId(@Path('id') String id);
 
   @GET("/auth/email")
   Future<ResponseEntity<String>> getEmailCode(@Query('email') String email);
