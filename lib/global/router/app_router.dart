@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:photo_card_flutter/feature/home/screen/dev_pages_screen.dart';
@@ -9,9 +10,9 @@ import '../service/global_keys.dart';
 class AppRouter {
   late final router = GoRouter(
     debugLogDiagnostics: false,
-    // refreshListenable: appStateManager,
+    // refreshListenable: TODO,
     navigatorKey: navigatorKey,
-    initialLocation: '/dev-pages',
+    initialLocation: getInitialLocation(),
     routes: [
       GoRoute(
         name: 'home',
@@ -53,4 +54,12 @@ Page<dynamic> buildNoTransitionPageWithState({
     name: state.name,
     child: child,
   );
+}
+
+String getInitialLocation() {
+  if (kDebugMode) {
+    return '/dev-pages';
+  }
+
+  return '/login';
 }
