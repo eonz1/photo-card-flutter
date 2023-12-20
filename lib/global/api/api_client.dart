@@ -77,15 +77,28 @@ class ApiClient {
         return handler.next(err);
       }
 
-      // TODO: 토큰 재발행 api 호출
-
-      final options = err.requestOptions;
-      await setAuthorizationToken(options);
-
       try {
+        // TODO: 확인 필요
         final dio = Dio();
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        String accessToken = prefs.getString('accessToken') ?? '';
+        String refreshToken = prefs.getString('refreshToken') ?? '';
+
+        final result = await dio.post(
+            "${ApiRouteConstants.getBaseUrl()}/photocard/api/v1/reissue",
+            data: {"access_token": accessToken, "refresh_token": refreshToken});
+
+        prefs.setString('accessToken', result.data.result.accessToken);
+        prefs.setString('refreshToken', result.data.result.refreshToken);
+
+        final options = err.requestOptions;
+        await setAuthorizationToken(options);
+
         dio.interceptors.add(createDioLogger());
+
+        // 요청 재전송
         final response = await dio.fetch(options);
+
         return handler.resolve(response);
       } on DioException catch (error) {
         return handler.reject(error);
