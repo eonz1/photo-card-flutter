@@ -4,10 +4,9 @@ part 'verify_email_request.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class VerifyEmailRequest {
-  String? email = "";
-  String? emailAuthCode = "";
+  String? userEmail = "";
 
-  VerifyEmailRequest({this.email, this.emailAuthCode});
+  VerifyEmailRequest({this.userEmail});
 
   factory VerifyEmailRequest.fromJson(Map<String, dynamic> json) =>
       _$VerifyEmailRequestFromJson(json);

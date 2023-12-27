@@ -102,8 +102,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                         TextButton(
-                            onPressed: () {
-                              service.getEmailVerifyCode(viewModel.email.value);
+                            onPressed: () async {
+                              final request = VerifyEmailRequest(
+                                  userEmail: viewModel.email.value);
+
+                              final result =
+                                  await service.getEmailVerifyCode(request);
+
+                              if (result) {
+                                snackBarService.show("이메일을 확인해주세요.");
+                              }
                             },
                             child: const Text("인증번호 전송"))
                       ],
@@ -115,26 +123,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             controller: _emailVerifyCodeTextEditController,
                             context: context,
                             labelText: "이메일 번호 인증코드",
-                            keyboardType: TextInputType.phone,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
                           ),
                         ),
                         TextButton(
                             onPressed: () async {
-                              final request = VerifyEmailRequest(
-                                  email: viewModel.email.value,
-                                  emailAuthCode:
-                                      _emailVerifyCodeTextEditController.text);
-
                               final result =
-                                  await service.verifyEmailCode(request);
+                                  await service.verifyEmailVerifyCode(
+                                      _emailVerifyCodeTextEditController.text,
+                                      viewModel.email.value);
 
                               if (result == false) {
-                                // TODO: 인증코드가 일치하지 않습니다.
+                                snackBarService.showError("인증코드가 일치하지 않아요.");
                               } else {
-                                // TODO: 이메일 인증이 처리되었습니다.
+                                snackBarService.show("이메일 인증이 완료되었어요!");
                               }
                             },
                             child: const Text("인증하기"))
@@ -169,19 +170,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           // TODO: 아이디 중복 확인 했는 지
                           // TODO: 이메일 인증 했는 지
 
-                          await service.signUp(
+                          final result = await service.signUp(
                               id: viewModel.id.value,
                               password: viewModel.password.value,
                               phoneNumber: viewModel.phoneNumber.value,
                               email: viewModel.email.value);
 
-                          // TODO: 정상적으로 회원가입했을때만 로그인화면으로 보내기
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ),
-                          );
+                          if (result.resultCode == 200) {
+                            // TODO: gorouter로 이동
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginScreen(),
+                              ),
+                            );
+                          }
                         },
                   child: const Text("가입하기"))
             ],

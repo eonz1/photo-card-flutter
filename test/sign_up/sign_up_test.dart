@@ -12,11 +12,11 @@ void main() {
     String email5 = "photocard@photocard.";
     String email6 = "photocard@photocard.com";
 
-    expect(signUpService.isValidEmailFormat(email1), false);
-    expect(signUpService.isValidEmailFormat(email2), false);
-    expect(signUpService.isValidEmailFormat(email3), false);
-    expect(signUpService.isValidEmailFormat(email4), false);
-    expect(signUpService.isValidEmailFormat(email5), false);
-    expect(signUpService.isValidEmailFormat(email6), true);
+    expect(signUpService.isEmailFormat(email1), false);
+    expect(signUpService.isEmailFormat(email2), false);
+    expect(signUpService.isEmailFormat(email3), false);
+    expect(signUpService.isEmailFormat(email4), false);
+    expect(signUpService.isEmailFormat(email5), false);
+    expect(signUpService.isEmailFormat(email6), true);
   });
 }

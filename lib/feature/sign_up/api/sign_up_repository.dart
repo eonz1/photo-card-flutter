@@ -12,17 +12,18 @@ abstract class SignUpRepository {
   factory SignUpRepository(Dio dio, {String baseUrl}) = _SignUpRepository;
 
   @POST("/member")
-  Future<void> signUp(
+  Future<ResponseEntity<dynamic>> signUp(
     @Body() SignUpRequest signUpRequest,
   );
 
   @GET("/duplication-check/user-id/{id}")
   Future<ResponseEntity<bool>> isDuplicatedId(@Path('id') String id);
 
-  @GET("/auth/email")
-  Future<ResponseEntity<String>> getEmailCode(@Query('email') String email);
-
   @POST("/auth/email")
-  Future<ResponseEntity<String>> verifyEmailCode(
+  Future<ResponseEntity<String>> getEmailCode(
       @Body() VerifyEmailRequest verifyEmailRequest);
+
+  @GET("/auth/email/{code}")
+  Future<ResponseEntity<String>> verifyEmailCode(
+      @Path('code') String code, @Query('user_email') String userEmail);
 }

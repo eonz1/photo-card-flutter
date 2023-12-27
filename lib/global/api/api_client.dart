@@ -37,7 +37,12 @@ class ApiClient {
 
       final isDuplicationCheck = options.path.contains('duplication-check');
 
-      if (!isLoginRequest && !isSignUpRequest && !isDuplicationCheck) {
+      final isVerifyEmail = options.path.contains('/auth/email');
+
+      if (!isLoginRequest &&
+          !isSignUpRequest &&
+          !isDuplicationCheck &&
+          !isVerifyEmail) {
         await setAuthorizationToken(options);
       }
 
@@ -60,19 +65,20 @@ class ApiClient {
     }
 
     onError(DioException err, ErrorInterceptorHandler handler) async {
-      final isLoginRequest = err.requestOptions.path == '/login' &&
-          err.requestOptions.method == 'POST';
+      final isLoginRequest = err.requestOptions.path == '/login';
 
       final isSignUpRequest = err.requestOptions.path == '/member' &&
           err.requestOptions.method == 'POST';
 
-      final isUserIdDuplicationCheck =
-          err.requestOptions.path.contains('/duplication-check') &&
-              err.requestOptions.method == 'POST';
+      final isDuplicationCheck =
+          err.requestOptions.path.contains('/duplication-check');
+
+      final isVerifyEmail = err.requestOptions.path.contains('/auth/email');
 
       if (isSignUpRequest ||
           isLoginRequest ||
-          isUserIdDuplicationCheck ||
+          isDuplicationCheck ||
+          isVerifyEmail ||
           err.response?.statusCode != 401) {
         return handler.next(err);
       }

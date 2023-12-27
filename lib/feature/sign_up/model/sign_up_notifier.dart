@@ -26,7 +26,9 @@ class SignUpNotifier with ChangeNotifier {
   final signUpService = SignUpService();
 
   void vaildSignUpButton() {
-    // TODO: 이메일 인증
+    // TODO: 이메일 인증 했는 지
+    // TODO: 아이디 중복 확인 했는 지
+
     if (_id.error != null ||
         _password.error != null ||
         _reEnterPassword.error != null ||
@@ -49,8 +51,7 @@ class SignUpNotifier with ChangeNotifier {
       return;
     }
 
-    if (_id.value != "") _canPress = true;
-
+    _canPress = true;
     notifyListeners();
   }
 
@@ -72,6 +73,15 @@ class SignUpNotifier with ChangeNotifier {
 
       notifyListeners();
       vaildSignUpButton();
+      return;
+    }
+
+    if (!signUpService.isPasswordFormat(value)) {
+      _password = ValidationItem(value, "영문 대/소문자, 숫자, 특수문자 조합 8-16자이어야 해요.");
+      _reEnterPassword = ValidationItem("", null);
+
+      vaildSignUpButton();
+      notifyListeners();
       return;
     }
 
@@ -113,7 +123,7 @@ class SignUpNotifier with ChangeNotifier {
       return;
     }
 
-    if (!signUpService.isValidEmailFormat(value)) {
+    if (!signUpService.isEmailFormat(value)) {
       _email = ValidationItem("", "이메일 주소를 정확히 입력해주세요.");
 
       vaildSignUpButton();

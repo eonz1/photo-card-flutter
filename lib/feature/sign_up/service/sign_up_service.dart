@@ -15,7 +15,7 @@ class SignUpService {
     signUpRepository = SignUpRepository(apiClient.createDio());
   }
 
-  Future<void> signUp({
+  Future<ResponseEntity> signUp({
     required String id,
     required String password,
     required String phoneNumber,
@@ -42,21 +42,26 @@ class SignUpService {
     return result.result!;
   }
 
-  Future<void> getEmailVerifyCode(String email) async {
-    // TODO
-    await signUpRepository.getEmailCode(email);
+  Future<bool> verifyEmailVerifyCode(String code, String email) async {
+    final result = await signUpRepository.verifyEmailCode(code, email);
+
+    return result.resultCode == 200;
   }
 
-  Future<bool> verifyEmailCode(VerifyEmailRequest verifyEmailRequest) async {
-    // TODO
-    final result = await signUpRepository.verifyEmailCode(verifyEmailRequest);
+  Future<bool> getEmailVerifyCode(VerifyEmailRequest verifyEmailRequest) async {
+    final result = await signUpRepository.getEmailCode(verifyEmailRequest);
 
-    return true;
+    return result.resultCode == 201;
   }
 
-  bool isValidEmailFormat(value) {
+  bool isEmailFormat(value) {
     return RegExp(
             r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(value);
+  }
+
+  bool isPasswordFormat(value) {
+    return RegExp(r"^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*?_]).{8,16}$")
         .hasMatch(value);
   }
 }
