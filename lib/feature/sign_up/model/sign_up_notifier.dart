@@ -58,6 +58,18 @@ class SignUpNotifier with ChangeNotifier {
   void changeId(String value) {
     if (value.isEmpty) {
       _id = ValidationItem("", "아이디를 입력해주세요.");
+
+      notifyListeners();
+      vaildSignUpButton();
+      return;
+    }
+
+    if (!signUpService.isIdFormat(value)) {
+      _id = ValidationItem(value, "영문 소문자와 숫자 조합 6-12자이어야 해요.");
+
+      vaildSignUpButton();
+      notifyListeners();
+      return;
     }
 
     _id = ValidationItem(value, null);
