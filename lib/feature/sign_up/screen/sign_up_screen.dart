@@ -137,6 +137,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               } else {
                                 snackBarService.show("이메일 인증이 완료되었어요!");
                               }
+
+                              viewModel.isEmailVerify(result);
+                              viewModel.vaildSignUpButton();
                             },
                             child: const Text("인증하기"))
                       ],
@@ -176,7 +179,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               phoneNumber: viewModel.phoneNumber.value,
                               email: viewModel.email.value);
 
-                          if (result.resultCode == 200) {
+                          if (result.resultCode == 201) {
                             // TODO: gorouter로 이동
                             Navigator.pushReplacement(
                               context,

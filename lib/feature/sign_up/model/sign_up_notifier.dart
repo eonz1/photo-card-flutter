@@ -10,6 +10,7 @@ class SignUpNotifier with ChangeNotifier {
   ValidationItem _phoneNumber = ValidationItem("", null);
   ValidationItem _email = ValidationItem("", null);
   bool _canPress = false;
+  bool _didEmailVerify = false;
 
   ValidationItem get id => _id;
 
@@ -23,28 +24,31 @@ class SignUpNotifier with ChangeNotifier {
 
   bool get canPress => _canPress;
 
+  bool get didEmailVerify => _didEmailVerify;
+
   final signUpService = SignUpService();
 
   void vaildSignUpButton() {
-    // TODO: 이메일 인증 했는 지
     // TODO: 아이디 중복 확인 했는 지
 
-    if (_id.error != null ||
-        _password.error != null ||
-        _reEnterPassword.error != null ||
-        _phoneNumber.error != null ||
-        _email.error != null) {
+    if (id.error != null ||
+        password.error != null ||
+        reEnterPassword.error != null ||
+        phoneNumber.error != null ||
+        email.error != null ||
+        didEmailVerify != true) {
       _canPress = false;
 
       notifyListeners();
       return;
     }
 
-    if (_id.value == "" ||
-        _password.value == "" ||
-        _reEnterPassword.value == "" ||
-        _phoneNumber.value == "" ||
-        _email.value == "") {
+    if (id.value == "" ||
+        password.value == "" ||
+        reEnterPassword.value == "" ||
+        phoneNumber.value == "" ||
+        email.value == "" ||
+        didEmailVerify != true) {
       _canPress = false;
 
       notifyListeners();
@@ -112,7 +116,7 @@ class SignUpNotifier with ChangeNotifier {
       return;
     }
 
-    if (value != _password.value) {
+    if (value != password.value) {
       _reEnterPassword = ValidationItem("", "비밀번호가 일치하지 않습니다.");
 
       vaildSignUpButton();
@@ -184,6 +188,12 @@ class SignUpNotifier with ChangeNotifier {
     } else {
       _id = ValidationItem(id.value, null);
     }
+
+    notifyListeners();
+  }
+
+  void isEmailVerify(bool value) {
+    _didEmailVerify = value;
 
     notifyListeners();
   }
