@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:photo_card_flutter/feature/bottom_navigation/screen/custom_bottom_navigation_bar.dart';
 import 'package:photo_card_flutter/feature/profile/screen/password_edit_screen.dart';
 import 'package:photo_card_flutter/feature/profile/screen/profile_edit_screen.dart';
+import 'package:photo_card_flutter/feature/profile/screen/profile_notifier.dart';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -9,7 +12,6 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      appBar: AppBar(title: Text("프로필 화면")),
       body: Column(
         children: [
           ClipRRect(
@@ -20,10 +22,14 @@ class ProfileScreen extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(40)),
               onPressed: () {
+                // TODO: go router의 페이지이동으로 수정
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ProfileEditScreen(),
+                    builder: (context) => ChangeNotifierProvider(
+                      create: (context) => ProfileNotifier(),
+                      builder: (context, child) => const ProfileEditScreen(),
+                    ),
                   ),
                 );
               },
@@ -42,6 +48,7 @@ class ProfileScreen extends StatelessWidget {
               child: const Text("비밀번호 변경")),
         ],
       ),
+      bottomNavigationBar: CustomBottomNavigationBar(),
     ));
   }
 }
