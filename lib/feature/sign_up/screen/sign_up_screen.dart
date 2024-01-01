@@ -113,7 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 snackBarService.show("이메일을 확인해주세요.");
                               }
                             },
-                            child: const Text("인증번호 전송"))
+                            child: const Text("인증코드 전송"))
                       ],
                     ),
                     Row(
@@ -122,7 +122,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           child: _textFormField(
                             controller: _emailVerifyCodeTextEditController,
                             context: context,
-                            labelText: "이메일 번호 인증코드",
+                            labelText: "이메일 인증코드",
                           ),
                         ),
                         TextButton(
