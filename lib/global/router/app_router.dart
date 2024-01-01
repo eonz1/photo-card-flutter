@@ -15,8 +15,8 @@ class AppRouter {
     initialLocation: getInitialLocation(),
     routes: [
       GoRoute(
-        name: 'home',
-        path: '/',
+        name: "home",
+        path: "/",
         pageBuilder: (context, state) => buildNoTransitionPageWithState(
           state: state,
           child: const HomeScreen(),
@@ -24,6 +24,7 @@ class AppRouter {
         routes: [],
       ),
       GoRoute(
+        name: "login",
         path: "/login",
         pageBuilder: (context, state) => buildNoTransitionPageWithState(
           state: state,
@@ -31,6 +32,7 @@ class AppRouter {
         ),
       ),
       GoRoute(
+        name: "dev-pages",
         path: "/dev-pages",
         pageBuilder: (context, state) => buildNoTransitionPageWithState(
           state: state,
