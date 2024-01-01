@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import 'feature/home/screen/home_screen.dart';
 import 'global/provider/provider_setup.dart';
+import 'global/router/app_router.dart';
+import 'global/service/global_keys.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,13 +27,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppRouter appRouter = AppRouter();
 
-    return MaterialApp(
+    return MaterialApp.router(
+      scaffoldMessengerKey: scaffoldMessengerKey,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: HomeScreen(),
+      routerConfig: appRouter.router,
       debugShowCheckedModeBanner: false,
     );
   }

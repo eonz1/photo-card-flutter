@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:photo_card_flutter/feature/bottom_navigation/screen/custom_bottom_navigation_bar.dart';
+
+import '../../bottom_navigation/screen/custom_bottom_navigation_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,9 +13,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        bottomNavigationBar: const CustomBottomNavigationBar(),
-      ),
-    );
+        child: Scaffold(
+      bottomNavigationBar: const CustomBottomNavigationBar(),
+    ));
   }
 }
