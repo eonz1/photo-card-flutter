@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:photo_card_flutter/feature/bottom_navigation/screen/custom_bottom_navigation_bar.dart';
+import 'package:photo_card_flutter/feature/profile/screen/password_edit_notifier.dart';
 import 'package:photo_card_flutter/feature/profile/screen/password_edit_screen.dart';
 import 'package:photo_card_flutter/feature/profile/screen/profile_edit_screen.dart';
 import 'package:photo_card_flutter/feature/profile/screen/profile_notifier.dart';
@@ -41,7 +42,10 @@ class ProfileScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const PasswordEditScreen(),
+                    builder: (context) => ChangeNotifierProvider(
+                      create: (context) => PasswordEditNotifier(),
+                      builder: (context, child) => const PasswordEditScreen(),
+                    ),
                   ),
                 );
               },
