@@ -83,19 +83,21 @@ class ApiClient {
         return handler.next(err);
       }
 
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      String accessToken = prefs.getString('accessToken') ?? '';
+      String refreshToken = prefs.getString('refreshToken') ?? '';
+
       try {
-        // TODO: 확인 필요
         final dio = Dio();
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-        String accessToken = prefs.getString('accessToken') ?? '';
-        String refreshToken = prefs.getString('refreshToken') ?? '';
-
         final result = await dio.post(
-            "${ApiRouteConstants.getBaseUrl()}/photocard/api/v1/reissue",
-            data: {"access_token": accessToken, "refresh_token": refreshToken});
+            "${ApiRouteConstants.getBaseUrl()}${ApiRouteConstants.basePath}/reissue",
+            options: Options(headers: {
+              "AccessToken": accessToken,
+              "RefreshToken": refreshToken
+            }));
 
-        prefs.setString('accessToken', result.data.result.accessToken);
-        prefs.setString('refreshToken', result.data.result.refreshToken);
+        prefs.setString('accessToken', result.data["result"]["access_token"]);
+        prefs.setString('refreshToken', result.data["result"]["refresh_token"]);
 
         final options = err.requestOptions;
         await setAuthorizationToken(options);
