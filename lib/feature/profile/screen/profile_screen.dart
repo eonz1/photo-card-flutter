@@ -3,7 +3,6 @@ import 'package:photo_card_flutter/feature/bottom_navigation/screen/custom_botto
 import 'package:photo_card_flutter/feature/profile/screen/password_edit_notifier.dart';
 import 'package:photo_card_flutter/feature/profile/screen/password_edit_screen.dart';
 import 'package:photo_card_flutter/feature/profile/screen/profile_edit_screen.dart';
-import 'package:photo_card_flutter/feature/profile/screen/profile_notifier.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -27,10 +26,7 @@ class ProfileScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ChangeNotifierProvider(
-                      create: (context) => ProfileNotifier(),
-                      builder: (context, child) => const ProfileEditScreen(),
-                    ),
+                    builder: (context) => const ProfileEditScreen(),
                   ),
                 );
               },

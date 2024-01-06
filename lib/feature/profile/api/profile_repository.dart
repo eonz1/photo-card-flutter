@@ -11,9 +11,8 @@ part 'profile_repository.g.dart';
 abstract class ProfileRepository {
   factory ProfileRepository(Dio dio, {String baseUrl}) = _ProfileRepository;
 
-  @GET("/profile/{nickname}")
-  Future<ResponseEntity<ProfileResponse>> getProfile(
-      @Path("nickname") String nickname);
+  @GET("/member/account")
+  Future<ResponseEntity<ProfileResponse>> getProfile();
 
   @POST("/profile")
   Future<ResponseEntity> saveProfile(@Body() ProfileRequest profileRequest);

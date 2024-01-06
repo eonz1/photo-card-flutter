@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:photo_card_flutter/feature/home/screen/dev_pages_screen.dart';
 import 'package:photo_card_flutter/feature/login/screen/login_screen.dart';
+import 'package:photo_card_flutter/feature/profile/screen/profile_screen.dart';
 
 import '../../feature/home/screen/home_screen.dart';
 import '../service/global_keys.dart';
@@ -21,7 +22,16 @@ class AppRouter {
           state: state,
           child: const HomeScreen(),
         ),
-        routes: [],
+        routes: [
+          GoRoute(
+            name: "profile",
+            path: "profile",
+            pageBuilder: (context, state) => buildNoTransitionPageWithState(
+              state: state,
+              child: const ProfileScreen(),
+            ),
+          ),
+        ],
       ),
       GoRoute(
         name: "login",

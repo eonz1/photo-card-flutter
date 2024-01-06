@@ -19,8 +19,7 @@ class ProfileService {
   Future<ProfileResponse> getProfile() async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      ResponseEntity<ProfileResponse> response =
-          await repository.getProfile(prefs.getString("userId") ?? "");
+      ResponseEntity<ProfileResponse> response = await repository.getProfile();
       return response.result!;
     } on DioException catch (exception) {
       DioExceptionHandler.showExceptionMessage(exception);

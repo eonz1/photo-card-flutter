@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:photo_card_flutter/feature/bottom_navigation/model/bottom_navigation_notifier.dart';
-import 'package:photo_card_flutter/feature/profile/screen/profile_screen.dart';
 import 'package:provider/provider.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
@@ -22,12 +22,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
           case 1:
             break;
           case 2:
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const ProfileScreen(),
-              ),
-            );
+            if (context.mounted) context.goNamed("profile");
             break;
           default:
             break;

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:photo_card_flutter/feature/profile/screen/profile_notifier.dart';
-import 'package:provider/provider.dart';
+import 'package:photo_card_flutter/feature/profile/screen/email_bottom_sheet_widget.dart';
+import 'package:photo_card_flutter/feature/profile/screen/nickname_bottom_sheet_widget.dart';
 
-import '../../../global/logger.dart';
 import '../api/profile_response.dart';
 import '../service/profile_service.dart';
 
@@ -16,19 +15,17 @@ class ProfileEditScreen extends StatefulWidget {
 class _ProfileEditScreenState extends State<ProfileEditScreen> {
   final ProfileService service = ProfileService();
 
+  late Future<ProfileResponse> profileResponse;
+
   final _nicknameTextEditingController = TextEditingController();
   final _emailTextEditingController = TextEditingController();
-  final _emailVerifyCodeTextEditingController = TextEditingController();
-
-  late String originNickname;
-  late String originEmail;
-
-  late Future<ProfileResponse> profileResponse;
+  final _phoneNumberTextEditingController = TextEditingController();
 
   @override
   void dispose() {
     _nicknameTextEditingController.dispose();
     _emailTextEditingController.dispose();
+    _phoneNumberTextEditingController.dispose();
     super.dispose();
   }
 
@@ -40,30 +37,16 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     result.then((value) {
       _nicknameTextEditingController.text = value.nickname!;
       _emailTextEditingController.text = value.userEmail!;
-
-      originNickname = value.nickname!;
-      originEmail = value.userEmail!;
+      _phoneNumberTextEditingController.text = value.phoneNumber!;
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = context.watch<ProfileNotifier>();
-    String nickname = _nicknameTextEditingController.text;
-    String email = _emailTextEditingController.text;
-
     return SafeArea(
         child: Scaffold(
-      appBar: AppBar(title: const Text("내 정보 수정"), actions: [
-        TextButton(
-            onPressed: () async {
-              // TODO : 확인하기
-              final result = await service.saveProfile(
-                  userEmail: email, nickname: nickname);
-            },
-            child: const Text("완료"))
-      ]),
+      appBar: AppBar(title: const Text("내 정보 수정")),
       body: FutureBuilder(
           future: profileResponse,
           builder: (context, snapshot) {
@@ -80,53 +63,61 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     borderRadius: BorderRadius.circular(20.0),
                     child: const Text("프로필 사진"),
                   ),
-                  TextFormField(
+                  _textFormField(
+                    context: context,
                     controller: _nicknameTextEditingController,
-                    onChanged: (value) => viewModel.changeNickname(value),
-                    decoration: const InputDecoration(labelText: "닉네임"),
+                    labelText: "닉네임",
+                    bottomSheetWidget: NicknameBottomSheetWidget(
+                        nickname: _nicknameTextEditingController.text),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 16.0),
-                    child: Text("이메일은 인증해야 변경할 수 있어요."),
+                  _textFormField(
+                    context: context,
+                    controller: _emailTextEditingController,
+                    labelText: "이메일",
+                    bottomSheetWidget: Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: EmailBottomSheetWidget(),
+                    ),
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          readOnly: true,
-                          controller: _emailTextEditingController,
-                          onChanged: (value) => viewModel.changeEmail(value),
-                          decoration: const InputDecoration(labelText: "이메일"),
-                        ),
-                      ),
-                      TextButton(
-                          onPressed: () async {
-                            // TODO : 이메일 인증 코드 받기
-                          },
-                          child: const Text("인증코드 전송"))
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          readOnly: true,
-                          controller: _emailVerifyCodeTextEditingController,
-                          decoration:
-                              const InputDecoration(labelText: "이메일 인증 코드"),
-                        ),
-                      ),
-                      TextButton(
-                          onPressed: () async {
-                            // TODO : 코드 인증 하기
-                          },
-                          child: const Text("인증하기"))
-                    ],
+                  _textFormField(
+                    context: context,
+                    controller: _phoneNumberTextEditingController,
+                    labelText: "전화번호",
+                    bottomSheetWidget: Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: Center(
+                          child: Column(
+                        children: [TextFormField()],
+                      )),
+                    ),
                   ),
                 ],
               ),
             );
           }),
     ));
+  }
+
+  TextFormField _textFormField({
+    required BuildContext context,
+    required Widget bottomSheetWidget,
+    required TextEditingController controller,
+    String? labelText,
+  }) {
+    return TextFormField(
+      controller: controller,
+      readOnly: true,
+      onTap: () async {
+        String? value = await showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return bottomSheetWidget;
+            });
+
+        if (value != null) controller.text = value;
+      },
+      decoration: InputDecoration(
+          labelText: labelText, suffixIcon: const Icon(Icons.edit)),
+    );
   }
 }
