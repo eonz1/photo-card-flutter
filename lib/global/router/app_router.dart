@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:photo_card_flutter/feature/home/screen/dev_pages_screen.dart';
-import 'package:photo_card_flutter/feature/login/screen/login_screen.dart';
 
+import '../../feature/profile/profile_screen.dart';
+import '../../feature/home/screen/dev_pages_screen.dart';
 import '../../feature/home/screen/home_screen.dart';
+import '../../feature/login/screen/login_screen.dart';
 import '../service/global_keys.dart';
 
 class AppRouter {
@@ -15,15 +16,25 @@ class AppRouter {
     initialLocation: getInitialLocation(),
     routes: [
       GoRoute(
-        name: 'home',
-        path: '/',
+        name: "home",
+        path: "/",
         pageBuilder: (context, state) => buildNoTransitionPageWithState(
           state: state,
           child: const HomeScreen(),
         ),
-        routes: [],
+        routes: [
+          GoRoute(
+            name: "profile",
+            path: "profile",
+            pageBuilder: (context, state) => buildNoTransitionPageWithState(
+              state: state,
+              child: const ProfileScreen(),
+            ),
+          ),
+        ],
       ),
       GoRoute(
+        name: "login",
         path: "/login",
         pageBuilder: (context, state) => buildNoTransitionPageWithState(
           state: state,
@@ -31,6 +42,7 @@ class AppRouter {
         ),
       ),
       GoRoute(
+        name: "dev-pages",
         path: "/dev-pages",
         pageBuilder: (context, state) => buildNoTransitionPageWithState(
           state: state,

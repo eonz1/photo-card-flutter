@@ -14,11 +14,6 @@ class DioExceptionHandler {
     );
   }
 
-  static String exceptionMessage(DioException exception) {
-    _logging(exception);
-    return _getExceptionMessage(exception);
-  }
-
   static String _getExceptionMessage(DioException exception) {
     String defaultMessage = '오류가 발생했습니다.';
     Response<dynamic>? response = exception.response;

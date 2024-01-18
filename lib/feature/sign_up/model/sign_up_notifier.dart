@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photo_card_flutter/common/validation/validation_format.dart';
 import 'package:photo_card_flutter/feature/sign_up/service/sign_up_service.dart';
 
 import '../../../common/validation/validation_item.dart';
@@ -27,6 +28,7 @@ class SignUpNotifier with ChangeNotifier {
   bool get didEmailVerify => _didEmailVerify;
 
   final signUpService = SignUpService();
+  final validationFormat = ValidationFormat();
 
   void vaildSignUpButton() {
     // TODO: 아이디 중복 확인 했는 지
@@ -68,7 +70,7 @@ class SignUpNotifier with ChangeNotifier {
       return;
     }
 
-    if (!signUpService.isIdFormat(value)) {
+    if (!validationFormat.isIdFormat(value)) {
       _id = ValidationItem(value, "영문 소문자와 숫자 조합 6-12자이어야 해요.");
 
       vaildSignUpButton();
@@ -92,7 +94,7 @@ class SignUpNotifier with ChangeNotifier {
       return;
     }
 
-    if (!signUpService.isPasswordFormat(value)) {
+    if (!validationFormat.isPasswordFormat(value)) {
       _password = ValidationItem(value, "영문 대/소문자, 숫자, 특수문자 조합 8-16자이어야 해요.");
       _reEnterPassword = ValidationItem("", null);
 
@@ -139,7 +141,7 @@ class SignUpNotifier with ChangeNotifier {
       return;
     }
 
-    if (!signUpService.isEmailFormat(value)) {
+    if (!validationFormat.isEmailFormat(value)) {
       _email = ValidationItem("", "이메일 주소를 정확히 입력해주세요.");
 
       vaildSignUpButton();

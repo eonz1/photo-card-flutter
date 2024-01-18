@@ -26,6 +26,7 @@ class LoginService {
       ResponseEntity<LoginResponse> response = await repository.login(request);
 
       final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('userId', response.result!.userId!);
       prefs.setString('grantType', response.result!.grantType!);
       prefs.setString('accessToken', response.result!.accessToken!);
       prefs.setString('refreshToken', response.result!.refreshToken!);

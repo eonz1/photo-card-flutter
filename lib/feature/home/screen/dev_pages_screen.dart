@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:photo_card_flutter/feature/home/screen/home_screen.dart';
-import 'package:photo_card_flutter/feature/login/screen/login_screen.dart';
 
+import '../../profile/profile_screen.dart';
+import '../../login/screen/login_screen.dart';
 import '../../sign_up/screen/sign_up_screen.dart';
+import 'home_screen.dart';
 
 class DevPagesScreen extends StatelessWidget {
   const DevPagesScreen({super.key});
@@ -55,6 +56,18 @@ class DevPagesScreen extends StatelessWidget {
                         );
                       },
                       child: const Text("홈")),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(40)),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ProfileScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text("프로필")),
                 ],
               ),
             ),

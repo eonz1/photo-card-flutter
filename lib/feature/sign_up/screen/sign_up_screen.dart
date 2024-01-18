@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:photo_card_flutter/feature/login/screen/login_screen.dart';
-import 'package:photo_card_flutter/feature/sign_up/api/verify_email_request.dart';
+import 'package:go_router/go_router.dart';
+import 'package:photo_card_flutter/feature/verify/api/verify_email_request.dart';
 import 'package:photo_card_flutter/feature/sign_up/service/sign_up_service.dart';
 import 'package:photo_card_flutter/global/service/snack_bar_service.dart';
 import 'package:provider/provider.dart';
@@ -113,7 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 snackBarService.show("이메일을 확인해주세요.");
                               }
                             },
-                            child: const Text("인증번호 전송"))
+                            child: const Text("인증코드 전송"))
                       ],
                     ),
                     Row(
@@ -122,7 +122,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           child: _textFormField(
                             controller: _emailVerifyCodeTextEditController,
                             context: context,
-                            labelText: "이메일 번호 인증코드",
+                            labelText: "이메일 인증코드",
                           ),
                         ),
                         TextButton(
@@ -180,13 +180,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               email: viewModel.email.value);
 
                           if (result.resultCode == 201) {
-                            // TODO: gorouter로 이동
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const LoginScreen(),
-                              ),
-                            );
+                            if (context.mounted) context.goNamed("login");
                           }
                         },
                   child: const Text("가입하기"))

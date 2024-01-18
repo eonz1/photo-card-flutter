@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:photo_card_flutter/feature/sign_up/api/sign_up_repository.dart';
-import 'package:photo_card_flutter/feature/sign_up/api/verify_email_request.dart';
+import 'package:photo_card_flutter/feature/verify/api/verify_email_request.dart';
+import 'package:photo_card_flutter/feature/verify/api/verify_repository.dart';
 import 'package:photo_card_flutter/global/api/response_entity.dart';
 
 import '../../../global/api/api_client.dart';
@@ -9,10 +10,12 @@ import '../api/sign_up_request.dart';
 
 class SignUpService {
   late final SignUpRepository signUpRepository;
+  late final VerifyRepository verifyRepository;
   final ApiClient apiClient = ApiClient();
 
   SignUpService() {
     signUpRepository = SignUpRepository(apiClient.createDio());
+    verifyRepository = VerifyRepository(apiClient.createDio());
   }
 
   Future<ResponseEntity> signUp({
@@ -43,29 +46,14 @@ class SignUpService {
   }
 
   Future<bool> verifyEmailVerifyCode(String code, String email) async {
-    final result = await signUpRepository.verifyEmailCode(code, email);
+    final result = await verifyRepository.verifyEmailCode(code, email);
 
     return result.resultCode == 200;
   }
 
   Future<bool> getEmailVerifyCode(VerifyEmailRequest verifyEmailRequest) async {
-    final result = await signUpRepository.getEmailCode(verifyEmailRequest);
+    final result = await verifyRepository.getEmailCode(verifyEmailRequest);
 
     return result.resultCode == 201;
-  }
-
-  bool isEmailFormat(value) {
-    return RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-        .hasMatch(value);
-  }
-
-  bool isPasswordFormat(value) {
-    return RegExp(r"^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*?_]).{8,16}$")
-        .hasMatch(value);
-  }
-
-  bool isIdFormat(value) {
-    return RegExp(r"^[a-z0-9]{6,12}$").hasMatch(value);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:photo_card_flutter/feature/bottom_navigation/model/bottom_navigation_notifier.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +13,21 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
     return BottomNavigationBar(
       currentIndex: state,
-      onTap: (index) => viewModel.set(index),
+      onTap: (index) {
+        viewModel.set(index);
+
+        switch (viewModel.state) {
+          case 0:
+            break;
+          case 1:
+            break;
+          case 2:
+            if (context.mounted) context.goNamed("profile");
+            break;
+          default:
+            break;
+        }
+      },
       items: [
         _bottomNavigationBarItem(icon: Icons.home, label: "홈"),
         _bottomNavigationBarItem(icon: Icons.chat, label: "채팅"),
@@ -21,12 +36,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
     );
   }
 
-  BottomNavigationBarItem _bottomNavigationBarItem({
-    required IconData icon,
-    required String label
-  }) {
-    return BottomNavigationBarItem(
-        icon: Icon(icon),
-        label: label);
+  BottomNavigationBarItem _bottomNavigationBarItem(
+      {required IconData icon, required String label}) {
+    return BottomNavigationBarItem(icon: Icon(icon), label: label);
   }
 }
