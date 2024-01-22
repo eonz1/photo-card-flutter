@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:photo_card_flutter/feature/profile/profile_service.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../bottom_navigation/screen/custom_bottom_navigation_bar.dart';
 import '../account/screen/password_edit_notifier.dart';
@@ -56,7 +57,13 @@ class ProfileScreen extends StatelessWidget {
               onPressed: () async {
                 final result = await profileService.logout();
 
-                if (context.mounted && result) {
+                if (result) {
+                  final SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  await prefs.clear();
+
+                  if (!context.mounted) return;
+
                   context.goNamed("login");
                 }
               },
