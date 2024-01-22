@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../feature/account/screen/account_edit_screen.dart';
 import '../../feature/profile/profile_screen.dart';
 import '../../feature/home/screen/dev_pages_screen.dart';
 import '../../feature/home/screen/home_screen.dart';
@@ -24,13 +25,23 @@ class AppRouter {
         ),
         routes: [
           GoRoute(
-            name: "profile",
-            path: "profile",
-            pageBuilder: (context, state) => buildNoTransitionPageWithState(
-              state: state,
-              child: const ProfileScreen(),
-            ),
-          ),
+              name: "profile",
+              path: "profile",
+              pageBuilder: (context, state) => buildNoTransitionPageWithState(
+                    state: state,
+                    child: const ProfileScreen(),
+                  ),
+              routes: [
+                GoRoute(
+                  name: "account",
+                  path: "account",
+                  pageBuilder: (context, state) =>
+                      buildNoTransitionPageWithState(
+                    state: state,
+                    child: const AccountEditScreen(),
+                  ),
+                ),
+              ]),
         ],
       ),
       GoRoute(
