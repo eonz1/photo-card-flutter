@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 class ApiRouteConstants {
   static String getBaseUrl() {
     if (kDebugMode) {
-      return "https://9879-203-132-166-14.ngrok-free.app/photocard";
+      return "http://129.154.62.23:8080/photocard";
     } else {
       // production mode
       return "http://photocard.site:8080";

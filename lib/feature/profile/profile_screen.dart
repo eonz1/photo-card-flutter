@@ -68,6 +68,13 @@ class ProfileScreen extends StatelessWidget {
                 }
               },
               child: const Text("로그아웃")),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(40)),
+              onPressed: () {
+                if (context.mounted) context.goNamed("withdraw");
+              },
+              child: const Text("탈퇴")),
         ],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(),

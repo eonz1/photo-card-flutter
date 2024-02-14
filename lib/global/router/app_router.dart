@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:photo_card_flutter/feature/withdraw/withdraw_screen.dart';
 
 import '../../feature/account/screen/account_edit_screen.dart';
 import '../../feature/profile/profile_screen.dart';
@@ -42,6 +43,14 @@ class AppRouter {
                   ),
                 ),
               ]),
+          GoRoute(
+            name: "withdraw",
+            path: "withdraw",
+            pageBuilder: (context, state) => buildNoTransitionPageWithState(
+              state: state,
+              child: const WithdrawScreen(),
+            ),
+          ),
         ],
       ),
       GoRoute(
