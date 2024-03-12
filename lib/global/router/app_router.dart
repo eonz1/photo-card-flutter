@@ -1,11 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:photo_card_flutter/feature/withdraw/withdraw_screen.dart';
 
+import '../../feature/account/screen/account_edit_screen.dart';
 import '../../feature/profile/profile_screen.dart';
 import '../../feature/home/screen/dev_pages_screen.dart';
 import '../../feature/home/screen/home_screen.dart';
 import '../../feature/login/screen/login_screen.dart';
+import '../../feature/sign_up/screen/sign_up_screen.dart';
 import '../service/global_keys.dart';
 
 class AppRouter {
@@ -24,11 +27,29 @@ class AppRouter {
         ),
         routes: [
           GoRoute(
-            name: "profile",
-            path: "profile",
+              name: "profile",
+              path: "profile",
+              pageBuilder: (context, state) => buildNoTransitionPageWithState(
+                    state: state,
+                    child: const ProfileScreen(),
+                  ),
+              routes: [
+                GoRoute(
+                  name: "account",
+                  path: "account",
+                  pageBuilder: (context, state) =>
+                      buildNoTransitionPageWithState(
+                    state: state,
+                    child: const AccountEditScreen(),
+                  ),
+                ),
+              ]),
+          GoRoute(
+            name: "withdraw",
+            path: "withdraw",
             pageBuilder: (context, state) => buildNoTransitionPageWithState(
               state: state,
-              child: const ProfileScreen(),
+              child: const WithdrawScreen(),
             ),
           ),
         ],
@@ -39,6 +60,14 @@ class AppRouter {
         pageBuilder: (context, state) => buildNoTransitionPageWithState(
           state: state,
           child: const LoginScreen(),
+        ),
+      ),
+      GoRoute(
+        name: "sign-up",
+        path: "/sign-up",
+        pageBuilder: (context, state) => buildNoTransitionPageWithState(
+          state: state,
+          child: const SignUpScreen(),
         ),
       ),
       GoRoute(

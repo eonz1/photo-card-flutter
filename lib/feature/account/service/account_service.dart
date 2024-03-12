@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:photo_card_flutter/feature/account/api/email_edit_request.dart';
 import 'package:photo_card_flutter/feature/account/api/nickname_edit_response.dart';
 import 'package:photo_card_flutter/feature/verify/api/verify_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../global/api/api_client.dart';
 import '../../../global/api/response_entity.dart';
@@ -24,7 +23,6 @@ class AccountService {
 
   Future<AccountResponse> getProfile() async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
       ResponseEntity<AccountResponse> response =
           await accountRepository.getAccountInfo();
       return response.result!;

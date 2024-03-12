@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:photo_card_flutter/feature/login/api/login_response.dart';
 import 'package:photo_card_flutter/global/api/response_entity.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../global/api/api_client.dart';
 import '../../../global/service/dio_exception_handler.dart';
@@ -25,11 +25,14 @@ class LoginService {
     try {
       ResponseEntity<LoginResponse> response = await repository.login(request);
 
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('userId', response.result!.userId!);
-      prefs.setString('grantType', response.result!.grantType!);
-      prefs.setString('accessToken', response.result!.accessToken!);
-      prefs.setString('refreshToken', response.result!.refreshToken!);
+      final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+      await secureStorage.write(key: 'userId', value: response.result!.userId!);
+      await secureStorage.write(
+          key: 'grantType', value: response.result!.grantType!);
+      await secureStorage.write(
+          key: 'accessToken', value: response.result!.accessToken!);
+      await secureStorage.write(
+          key: 'refreshToken', value: response.result!.refreshToken!);
 
       return true;
     } on DioException catch (exception) {

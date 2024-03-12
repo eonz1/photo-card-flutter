@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:photo_card_flutter/feature/sign_up/api/sign_up_repository.dart';
-import 'package:photo_card_flutter/feature/verify/api/verify_email_request.dart';
-import 'package:photo_card_flutter/feature/verify/api/verify_repository.dart';
-import 'package:photo_card_flutter/global/api/response_entity.dart';
 
 import '../../../global/api/api_client.dart';
+import '../../../global/api/response_entity.dart';
 import '../../../global/service/dio_exception_handler.dart';
+import '../../verify/api/verify_email_request.dart';
+import '../../verify/api/verify_repository.dart';
+import '../api/sign_up_repository.dart';
 import '../api/sign_up_request.dart';
 
 class SignUpService {
@@ -46,7 +46,13 @@ class SignUpService {
   }
 
   Future<bool> verifyEmailVerifyCode(String code, String email) async {
-    final result = await verifyRepository.verifyEmailCode(code, email);
+    late final ResponseEntity<String> result;
+
+    try {
+      result = await verifyRepository.verifyEmailCode(code, email);
+    } on DioException catch (exception) {
+      DioExceptionHandler.showExceptionMessage(exception);
+    }
 
     return result.resultCode == 200;
   }

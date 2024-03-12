@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api_route_constants.dart';
 
@@ -83,9 +83,9 @@ class ApiClient {
         return handler.next(err);
       }
 
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      String accessToken = prefs.getString('accessToken') ?? '';
-      String refreshToken = prefs.getString('refreshToken') ?? '';
+      final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+      String accessToken = await secureStorage.read(key: 'accessToken') ?? '';
+      String refreshToken = await secureStorage.read(key: 'refreshToken') ?? '';
 
       try {
         final dio = Dio();
@@ -96,8 +96,10 @@ class ApiClient {
               "RefreshToken": refreshToken
             }));
 
-        prefs.setString('accessToken', result.data["result"]["access_token"]);
-        prefs.setString('refreshToken', result.data["result"]["refresh_token"]);
+        await secureStorage.write(
+            key: 'accessToken', value: result.data["result"]["access_token"]);
+        await secureStorage.write(
+            key: 'refreshToken', value: result.data["result"]["refresh_token"]);
 
         final options = err.requestOptions;
         await setAuthorizationToken(options);
@@ -129,9 +131,9 @@ class ApiClient {
   }
 
   setAuthorizationToken(RequestOptions options) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String token = prefs.getString('accessToken') ?? '';
-    String grantType = prefs.getString('grantType') ?? '';
+    final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+    String token = await secureStorage.read(key: 'accessToken') ?? '';
+    String grantType = await secureStorage.read(key: 'grantType') ?? '';
 
     options.headers['authorization'] = '$grantType $token';
   }

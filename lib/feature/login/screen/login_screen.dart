@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:photo_card_flutter/feature/home/screen/home_screen.dart';
-import 'package:photo_card_flutter/feature/login/service/login_service.dart';
-import 'package:photo_card_flutter/feature/sign_up/screen/sign_up_screen.dart';
-import 'package:photo_card_flutter/global/service/snack_bar_service.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+
+import '../../../global/service/snack_bar_service.dart';
+import '../../sign_up/model/sign_up_notifier.dart';
+import '../../sign_up/screen/sign_up_screen.dart';
+import '../service/login_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -52,7 +55,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const SignUpScreen(),
+                    builder: (context) => ChangeNotifierProvider(
+                      create: (context) => SignUpNotifier(),
+                      builder: (context, child) => const SignUpScreen(),
+                    ),
                   ),
                 );
               },
@@ -68,12 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 final result = await service.login(id: id, password: password);
                 if (result == false) return;
 
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomeScreen(),
-                  ),
-                );
+                if (context.mounted) context.goNamed("home");
               },
               child: const Text("로그인")),
         ]),

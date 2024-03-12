@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
-import 'package:photo_card_flutter/feature/profile/profile_service.dart';
 import 'package:provider/provider.dart';
 
-import '../bottom_navigation/screen/custom_bottom_navigation_bar.dart';
-import '../account/screen/account_edit_screen.dart';
+import '../bottom_navigation/custom_bottom_navigation_bar.dart';
 import '../account/screen/password_edit_notifier.dart';
 import '../account/screen/password_edit_screen.dart';
+import 'profile_service.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -31,13 +31,9 @@ class ProfileScreen extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(40)),
               onPressed: () {
-                // TODO: go router의 페이지이동으로 수정
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AccountEditScreen(),
-                  ),
-                );
+                if (context.mounted) {
+                  context.goNamed("account");
+                }
               },
               child: const Text("내 정보 수정")),
           ElevatedButton(
@@ -61,11 +57,24 @@ class ProfileScreen extends StatelessWidget {
               onPressed: () async {
                 final result = await profileService.logout();
 
-                if (context.mounted && result) {
+                if (result) {
+                  final FlutterSecureStorage secureStorage =
+                      FlutterSecureStorage();
+                  await secureStorage.deleteAll();
+
+                  if (!context.mounted) return;
+
                   context.goNamed("login");
                 }
               },
               child: const Text("로그아웃")),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(40)),
+              onPressed: () {
+                if (context.mounted) context.goNamed("withdraw");
+              },
+              child: const Text("탈퇴")),
         ],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(),
