@@ -3,10 +3,10 @@ import 'package:flutter/foundation.dart';
 class ApiRouteConstants {
   static String getBaseUrl() {
     if (kDebugMode) {
-      return "http://129.154.62.23:8080/photocard";
+      return "https://photocard.site/photocard";
     } else {
       // production mode
-      return "http://photocard.site:8080";
+      return "https://photocard.site/photocard";
     }
   }
 

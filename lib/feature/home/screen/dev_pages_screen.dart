@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../profile/profile_screen.dart';
 import '../../login/screen/login_screen.dart';
+import '../../sign_up/model/sign_up_notifier.dart';
 import '../../sign_up/screen/sign_up_screen.dart';
 import 'home_screen.dart';
 
@@ -27,7 +29,10 @@ class DevPagesScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const SignUpScreen(),
+                            builder: (context) => ChangeNotifierProvider(
+                              create: (context) => SignUpNotifier(),
+                              builder: (context, child) => const SignUpScreen(),
+                            ),
                           ),
                         );
                       },

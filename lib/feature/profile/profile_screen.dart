@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
-import 'package:photo_card_flutter/feature/profile/profile_service.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../bottom_navigation/screen/custom_bottom_navigation_bar.dart';
+import '../bottom_navigation/custom_bottom_navigation_bar.dart';
 import '../account/screen/password_edit_notifier.dart';
 import '../account/screen/password_edit_screen.dart';
+import 'profile_service.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -58,9 +58,9 @@ class ProfileScreen extends StatelessWidget {
                 final result = await profileService.logout();
 
                 if (result) {
-                  final SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  await prefs.clear();
+                  final FlutterSecureStorage secureStorage =
+                      FlutterSecureStorage();
+                  await secureStorage.deleteAll();
 
                   if (!context.mounted) return;
 

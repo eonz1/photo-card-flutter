@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../global/service/snack_bar_service.dart';
-import '../../home/screen/home_screen.dart';
 import '../../sign_up/model/sign_up_notifier.dart';
 import '../../sign_up/screen/sign_up_screen.dart';
 import '../service/login_service.dart';
@@ -74,12 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 final result = await service.login(id: id, password: password);
                 if (result == false) return;
 
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomeScreen(),
-                  ),
-                );
+                if (context.mounted) context.goNamed("home");
               },
               child: const Text("로그인")),
         ]),
