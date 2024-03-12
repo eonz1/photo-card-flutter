@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:photo_card_flutter/feature/verify/api/verify_email_request.dart';
-import 'package:photo_card_flutter/feature/sign_up/service/sign_up_service.dart';
-import 'package:photo_card_flutter/global/service/snack_bar_service.dart';
 import 'package:provider/provider.dart';
 
+import '../../../global/service/snack_bar_service.dart';
+import '../../verify/api/verify_email_request.dart';
 import '../model/sign_up_notifier.dart';
+import '../service/sign_up_service.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -132,9 +132,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       _emailVerifyCodeTextEditController.text,
                                       viewModel.email.value);
 
-                              if (result == false) {
-                                snackBarService.showError("인증코드가 일치하지 않아요.");
-                              } else {
+                              if (result) {
                                 snackBarService.show("이메일 인증이 완료되었어요!");
                               }
 
