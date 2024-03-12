@@ -8,10 +8,7 @@ class DioExceptionHandler {
     final snackBarService = SnackBarService();
 
     _logging(exception);
-    snackBarService.showError(
-      _getExceptionMessage(exception),
-      duration: const Duration(seconds: 1),
-    );
+    snackBarService.showError(_getExceptionMessage(exception));
   }
 
   static String _getExceptionMessage(DioException exception) {
@@ -24,8 +21,9 @@ class DioExceptionHandler {
 
     int? statusCode = response.statusCode;
     String message = response.data['result_msg'] ?? defaultMessage;
+    String reason = response.data['reason'] ?? '';
 
-    return '[$statusCode] $message';
+    return '[$statusCode] $message\n$reason';
   }
 
   static void _logging(DioException exception) {
